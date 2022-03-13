@@ -53,7 +53,10 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float y = Mathf.PerlinNoise(x * .3f, z * .3f)*2f;
+                float v = 0.3f;
+                float r = 2f;
+
+                float y = Mathf.PerlinNoise(x * v, z * v)*r;
                 vertices[i] = new Vector3(x, y, z);
                 i++;
             }
@@ -95,7 +98,7 @@ public class MeshGenerator : MonoBehaviour
         mesh.RecalculateNormals();
     }
 
-
+    /* Draw on scene
     private void OnDrawGizmos()
     {
         if (vertices!=null)
@@ -106,4 +109,5 @@ public class MeshGenerator : MonoBehaviour
             }
         }
     }
+    */
 }
