@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
 public class MeshGenerator : MonoBehaviour
 {
     Mesh mesh;
@@ -19,29 +21,11 @@ public class MeshGenerator : MonoBehaviour
         mesh = new Mesh();
 
         this.GetComponent<MeshFilter>().mesh = mesh;
-        this.GetComponent<MeshRenderer>().material.color = Color.red;
-
         mesh.name = "Terrain";
 
         //StartCoroutine(CreateShape());
         CreateShape();
         UpdateMesh();
-    }
-
-    void Update()
-    {
-        //UpdateMesh();
-
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            mesh.Clear();
-        }
-
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            CreateShape();
-            UpdateMesh();
-        }
     }
 
     //IEnumerator CreateShape()
@@ -53,11 +37,8 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float v = 0.3f;
-                float r = 2f;
-
-                float y = Mathf.PerlinNoise(x * v, z * v)*r;
-                vertices[i] = new Vector3(x, y, z);
+                float y = Mathf.PerlinNoise(x * .3f, z * .3f)*2f;
+                vertices[i] = new Vector3(x, 0, z);
                 i++;
             }
         }
