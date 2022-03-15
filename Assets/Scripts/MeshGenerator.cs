@@ -15,6 +15,8 @@ public class MeshGenerator : MonoBehaviour
     Vector3[] vertices;
     int[] triangles;
 
+    public PerlinNose perlinNose;
+
 
     void Start()
     {
@@ -26,6 +28,11 @@ public class MeshGenerator : MonoBehaviour
         //StartCoroutine(CreateShape());
         CreateShape();
         UpdateMesh();
+    }
+
+    private void Update()
+    {
+        this.GetComponent<MeshRenderer>().material.mainTexture = perlinNose.GenerateTexture();
     }
 
     //IEnumerator CreateShape()

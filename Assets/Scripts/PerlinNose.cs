@@ -19,12 +19,16 @@ public class PerlinNose : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
-            meshRenderer = GetComponent<MeshRenderer>();
+            if (meshRenderer == null)
+            {
+                meshRenderer = GetComponent<MeshRenderer>();
+            }
+
             meshRenderer.material.mainTexture = GenerateTexture();
         }
     }
 
-    Texture2D GenerateTexture()
+    public Texture2D GenerateTexture()
     {
         Texture2D texture = new Texture2D(width, height);
 
