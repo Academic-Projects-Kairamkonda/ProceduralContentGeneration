@@ -14,13 +14,21 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] private float offsetX = 100f;
     [SerializeField] private float offsetY = 100f;
 
-
     Terrain terrain;
 
-    void Start()
+    private void Start()
     {
+        RandomOffset();
         terrain = this.GetComponent<Terrain>();
+
+    }
+
+    private void Update()
+    { 
         terrain.terrainData = GenerateTerrain(terrain.terrainData);
+
+        // To move the terrain on each frame
+        //offsetX += Time.deltaTime; 
     }
 
     public TerrainData GenerateTerrain(TerrainData terrainData)
@@ -59,4 +67,9 @@ public class TerrainGenerator : MonoBehaviour
 
     }
 
+    public void RandomOffset()
+    {
+        offsetX = UnityEngine.Random.Range(0, 9999f);
+        offsetY = UnityEngine.Random.Range(0, 9999f);
+    }
 }

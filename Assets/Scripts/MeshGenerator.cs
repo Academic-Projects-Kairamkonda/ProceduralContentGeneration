@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -9,14 +9,19 @@ public class MeshGenerator : MonoBehaviour
 {
     Mesh mesh;
 
-    public int xSize = 20;
-    public int zSize = 20;
+    [SerializeField] private int xSize = 30;
+    [SerializeField] private int zSize = 30;
 
     Vector3[] vertices;
     int[] triangles;
+    Color[] colors;
 
-    public PerlinNose perlinNose;
+    float minTerrainHeight;
+    float maxTerrainHeight;
 
+    private float scale=0.3f;
+
+    public Gradient gradient;
 
     void Start()
     {
@@ -25,18 +30,19 @@ public class MeshGenerator : MonoBehaviour
         this.GetComponent<MeshFilter>().mesh = mesh;
         mesh.name = "Terrain";
 
-        //StartCoroutine(CreateShape());
-        CreateShape();
-        UpdateMesh();
+        //this.GetComponent<MeshRenderer>().material.color = Color.white;
+
+        StartCoroutine(CreateShape());
+        //CreateShape();
     }
 
     private void Update()
     {
-        this.GetComponent<MeshRenderer>().material.mainTexture = perlinNose.GenerateTexture();
+        UpdateMesh();
     }
 
-    //IEnumerator CreateShape()
-    void CreateShape()
+    IEnumerator CreateShape()
+    //void CreateShape()
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
 
@@ -44,8 +50,13 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                float y = Mathf.PerlinNoise(x * .3f, z * .3f)*2f;
-                vertices[i] = new Vector3(x, 0, z);
+                float y = GetNoise(x, z);
+                vertices[i] = new Vector3(x, y, z);
+
+                if (y > maxTerrainHeight) maxTerrainHeight = y;
+                if (y < minTerrainHeight) minTerrainHeight = y;
+                
+
                 i++;
             }
         }
@@ -70,9 +81,21 @@ public class MeshGenerator : MonoBehaviour
                 vert++;
                 tris += 6;
 
-                //yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.001f);
             }
+
             vert++;
+        }
+
+        colors = new Color[vertices.Length];
+
+        for (int i=0, z = 0; z <= zSize; z++)
+        {
+            for (int x = 0; x <= xSize; x++)
+            {
+                float height = Mathf.InverseLerp(minTerrainHeight,maxTerrainHeight, vertices[i].y);
+                colors[i] = gradient.Evaluate(height);
+            }
         }
     }
 
@@ -82,20 +105,15 @@ public class MeshGenerator : MonoBehaviour
 
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.colors = colors;
 
         mesh.RecalculateNormals();
     }
 
-    /* Draw on scene
-    private void OnDrawGizmos()
+    public float GetNoise(int x, int z)
     {
-        if (vertices!=null)
-        {
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                Gizmos.DrawSphere(vertices[i], .1f);
-            }
-        }
+        float y = Mathf.PerlinNoise(x * scale, z * scale) * 2f;
+
+        return y;
     }
-    */
 }
