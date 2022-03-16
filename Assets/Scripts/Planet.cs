@@ -2,54 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet : MonoBehaviour
+namespace APG_CW1
 {
-   [Range(2,256)]
-    public int resolution = 10;
-
-    const int m_value = 6;
-
-    [SerializeField, HideInInspector]
-    MeshFilter[] meshFilters;
-    TerrainFace[] terrainFaces;
-
-    private void OnValidate()
+    public class Planet : MonoBehaviour
     {
-        Intialize();
-        GenerateMesh();
-    }
+        [Range(2, 256)]
+        public int resolution = 10;
 
-    void Intialize()
-    {
-        if (meshFilters == null || meshFilters.Length == 0)
+        const int m_value = 6;
+
+        [SerializeField, HideInInspector]
+        MeshFilter[] meshFilters;
+        TerrainFace[] terrainFaces;
+
+        private void OnValidate()
         {
-            meshFilters = new MeshFilter[m_value];
+            Intialize();
+            GenerateMesh();
         }
-        terrainFaces = new TerrainFace[m_value];
 
-        Vector3[] directions = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-
-        for (int i = 0; i < m_value; i++)
+        void Intialize()
         {
-            if (meshFilters[i] == null)
+            if (meshFilters == null || meshFilters.Length == 0)
             {
-                GameObject meshObj = new GameObject("mesh");
-                meshObj.transform.parent = transform;
-
-                meshObj.AddComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Standard"));
-                meshFilters[i] = meshObj.AddComponent<MeshFilter>();
-                meshFilters[i].sharedMesh = new Mesh();
+                meshFilters = new MeshFilter[m_value];
             }
+            terrainFaces = new TerrainFace[m_value];
 
-            terrainFaces[i] = new TerrainFace(meshFilters[i].sharedMesh, resolution, directions[i]);
+            Vector3[] directions = { Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+
+            for (int i = 0; i < m_value; i++)
+            {
+                if (meshFilters[i] == null)
+                {
+                    GameObject meshObj = new GameObject("mesh");
+                    meshObj.transform.parent = transform;
+
+                    meshObj.AddComponent<MeshRenderer>().sharedMaterial = new Material(Shader.Find("Standard"));
+                    meshFilters[i] = meshObj.AddComponent<MeshFilter>();
+                    meshFilters[i].sharedMesh = new Mesh();
+                }
+
+                terrainFaces[i] = new TerrainFace(meshFilters[i].sharedMesh, resolution, directions[i]);
+            }
         }
-    }
 
-    void GenerateMesh()
-    {
-        foreach (TerrainFace face in terrainFaces)
+        void GenerateMesh()
         {
-            face.ConstructMesh();
+            foreach (TerrainFace face in terrainFaces)
+            {
+                face.ConstructMesh();
+            }
         }
     }
 }

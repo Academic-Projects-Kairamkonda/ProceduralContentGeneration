@@ -3,73 +3,76 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TerrainGenerator : MonoBehaviour
+namespace APG_CW1
 {
-    [SerializeField] private int width = 256;
-    [SerializeField] private int height = 256;
-
-    [SerializeField] private int depth = 20;
-    [SerializeField] private float scale = 20f;
-
-    [SerializeField] private float offsetX = 100f;
-    [SerializeField] private float offsetY = 100f;
-
-    Terrain terrain;
-
-    private void Start()
+    public class TerrainGenerator : MonoBehaviour
     {
-        RandomOffset();
-        terrain = this.GetComponent<Terrain>();
+        [SerializeField] private int width = 256;
+        [SerializeField] private int height = 256;
 
-    }
+        [SerializeField] private int depth = 20;
+        [SerializeField] private float scale = 20f;
 
-    private void Update()
-    { 
-        terrain.terrainData = GenerateTerrain(terrain.terrainData);
+        [SerializeField] private float offsetX = 100f;
+        [SerializeField] private float offsetY = 100f;
 
-        // To move the terrain on each frame
-        //offsetX += Time.deltaTime; 
-    }
+        Terrain terrain;
 
-    public TerrainData GenerateTerrain(TerrainData terrainData)
-    {
-        terrainData.heightmapResolution = width + 1;
-
-        terrainData.size = new Vector3(width, depth, height);
-
-        terrainData.SetHeights(0, 0, GenerateHeights());
-
-        return terrainData;
-
-    }
-
-    private float[,] GenerateHeights()
-    {
-        float[,] heights = new float[width, height];
-
-        for (int x = 0; x < width; x++)
+        private void Start()
         {
-            for (int y = 0; y < height; y++)
-            {
-                heights[x, y] = CalculateHeight(x, y);
-            }
+            RandomOffset();
+            terrain = this.GetComponent<Terrain>();
+
         }
 
-        return heights;
-    }
+        private void Update()
+        {
+            terrain.terrainData = GenerateTerrain(terrain.terrainData);
 
-    private float CalculateHeight(int x, int y)
-    {
-        float xCoord = (float)x / width * scale+offsetX;
-        float yCoord = (float)y / height * scale+offsetY;
+            // To move the terrain on each frame
+            //offsetX += Time.deltaTime; 
+        }
 
-        return Mathf.PerlinNoise(xCoord, yCoord);
+        public TerrainData GenerateTerrain(TerrainData terrainData)
+        {
+            terrainData.heightmapResolution = width + 1;
 
-    }
+            terrainData.size = new Vector3(width, depth, height);
 
-    public void RandomOffset()
-    {
-        offsetX = UnityEngine.Random.Range(0, 9999f);
-        offsetY = UnityEngine.Random.Range(0, 9999f);
+            terrainData.SetHeights(0, 0, GenerateHeights());
+
+            return terrainData;
+
+        }
+
+        private float[,] GenerateHeights()
+        {
+            float[,] heights = new float[width, height];
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    heights[x, y] = CalculateHeight(x, y);
+                }
+            }
+
+            return heights;
+        }
+
+        private float CalculateHeight(int x, int y)
+        {
+            float xCoord = (float)x / width * scale + offsetX;
+            float yCoord = (float)y / height * scale + offsetY;
+
+            return Mathf.PerlinNoise(xCoord, yCoord);
+
+        }
+
+        public void RandomOffset()
+        {
+            offsetX = UnityEngine.Random.Range(0, 9999f);
+            offsetY = UnityEngine.Random.Range(0, 9999f);
+        }
     }
 }
