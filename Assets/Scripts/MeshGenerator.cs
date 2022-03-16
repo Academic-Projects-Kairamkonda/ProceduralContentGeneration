@@ -32,17 +32,17 @@ public class MeshGenerator : MonoBehaviour
         this.GetComponent<MeshFilter>().mesh = mesh;
         mesh.name = "Terrain";
 
-
-        StartCoroutine(CreateShape());
+        //StartCoroutine(CreateShape());
     }
 
     private void Update()
     {
+        CreateShape();
         UpdateMesh();
     }
 
-    IEnumerator CreateShape()
-    //void CreateShape()
+    
+   void CreateShape() //IEnumerator CreateShape()
     {
         vertices = new Vector3[(xSize + 1) * (zSize + 1)];
 
@@ -77,7 +77,7 @@ public class MeshGenerator : MonoBehaviour
                 vert++;
                 tris += 6;
 
-                yield return new WaitForSeconds(0.0001f);
+                //yield return new WaitForSeconds(0.0001f);
             }
 
             vert++;
@@ -103,5 +103,14 @@ public class MeshGenerator : MonoBehaviour
         noise -= Mathf.PerlinNoise(x * amplitude2, z * amplitude2) * frequency2;
         noise += Mathf.PerlinNoise(x * amplitude3, z * amplitude3) * frequency3 * 2;
         return noise;
+    }
+
+    public void Regenrate()
+    {
+        amplitude3 = UnityEngine.Random.Range(0.05f, 0.11f);
+        frequency3= UnityEngine.Random.Range(4f, 8f);
+
+        amplitude2= UnityEngine.Random.Range(0.4f, 0.7f);
+        frequency2= UnityEngine.Random.Range(1f, 3f);
     }
 }
