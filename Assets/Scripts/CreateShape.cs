@@ -10,14 +10,15 @@ namespace APG_CW1
     {
         Mesh mesh;
 
-        Vector3[] vertices;
-        int[] triangles;
+        [SerializeField] private Vector3[] vertices;
+        [SerializeField] private int[] triangles;
 
         void Start()
         {
             mesh = new Mesh();
             this.GetComponent<MeshFilter>().mesh = mesh;
-            this.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Standard"));
+            mesh.name = "triangle";
+            //this.GetComponent<MeshRenderer>().material = new Material(Shader.Find("Standard"));
 
             GetEquilateralTriangle();
             UpdateShape();
@@ -55,8 +56,7 @@ namespace APG_CW1
 
             triangles = new int[]
             {
-            0, 1, 2,
-            2, 3, 0
+            0, 1, 2
             };
 
         }

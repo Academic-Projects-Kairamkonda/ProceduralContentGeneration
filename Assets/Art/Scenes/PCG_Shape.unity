@@ -154,6 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bac33869301504d70a75ba2dd4eb41c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vertices: []
+  triangles: 
 --- !u!33 &113606678
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -195,7 +197,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: a19966a5c19fc4b8b8913500568729c5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

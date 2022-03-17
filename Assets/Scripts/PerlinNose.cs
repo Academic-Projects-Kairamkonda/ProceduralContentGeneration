@@ -17,6 +17,12 @@ namespace APG_CW1
         public float offsetX = 100f;
         public float offsetY = 100f;
 
+        private void Start()
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
+            meshRenderer.material.mainTexture = GenerateTexture();
+        }
+
         private void Update()
         {
             if (Input.anyKeyDown)

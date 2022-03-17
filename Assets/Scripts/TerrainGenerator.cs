@@ -30,7 +30,7 @@ namespace APG_CW1
             terrain.terrainData = GenerateTerrain(terrain.terrainData);
 
             // To move the terrain on each frame
-            //offsetX += Time.deltaTime; 
+            offsetX += Time.deltaTime; 
         }
 
         public TerrainData GenerateTerrain(TerrainData terrainData)

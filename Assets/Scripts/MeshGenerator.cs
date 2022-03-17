@@ -51,10 +51,7 @@ namespace APG_CW1
         /// </summary>
         void CreateShape() /* IEnumerator CreateShape()*/
         {
-            this.GetComponent<MeshRenderer>().material.color = Color.white;
-
             vertices = new Vector3[(xSize + 1) * (zSize + 1)];
-
 
             for (int i = 0, z = 0; z <= zSize; z++)
             {
