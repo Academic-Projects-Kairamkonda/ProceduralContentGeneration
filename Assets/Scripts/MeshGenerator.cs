@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace APG_CW1
 {
-
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     public class MeshGenerator : MonoBehaviour
@@ -47,10 +46,15 @@ namespace APG_CW1
             UpdateMesh();
         }
 
-
-        void CreateShape() //IEnumerator CreateShape()
+        /// <summary>
+        /// Function creates the shape
+        /// </summary>
+        void CreateShape() /* IEnumerator CreateShape()*/
         {
+            this.GetComponent<MeshRenderer>().material.color = Color.white;
+
             vertices = new Vector3[(xSize + 1) * (zSize + 1)];
+
 
             for (int i = 0, z = 0; z <= zSize; z++)
             {
@@ -92,6 +96,30 @@ namespace APG_CW1
                 vert++;
             }
 
+            GenerateColors();
+        }
+
+        /// <summary>
+        /// Noise generation on the mesh
+        /// </summary>
+        /// <param name="x">x position of vector</param>
+        /// <param name="z"> z position of vector</param>
+        /// <returns> noise position of y</returns>
+        private float CalculateNoise(float x, float z)
+        {
+            float noise;
+            noise = Mathf.PerlinNoise(x, z) * 5;
+            noise += Mathf.PerlinNoise(x * amplitude1, z * amplitude1) * frequency1;
+            noise -= Mathf.PerlinNoise(x * amplitude2, z * amplitude2) * frequency2;
+            noise += Mathf.PerlinNoise(x * amplitude3, z * amplitude3) * frequency3 * 2;
+            return noise;
+        }
+
+        /// <summary>
+        /// Add colors of the mesh based on the height
+        /// </summary>
+        private void GenerateColors()
+        {
             colors = new Color[vertices.Length];
             for (int i = 0,z=0; z <= zSize; z++)
             {
@@ -104,6 +132,18 @@ namespace APG_CW1
             }
         }
 
+        /// <summary>
+        /// Create new mesh
+        /// </summary>
+        public void Regenrate()
+        {
+            amplitude3 = UnityEngine.Random.Range(0.05f, 0.11f);
+            frequency3 = UnityEngine.Random.Range(4f, 8f);
+
+            amplitude2 = UnityEngine.Random.Range(0.4f, 0.7f);
+            frequency2 = UnityEngine.Random.Range(1f, 3f);
+        }
+
         private void UpdateMesh()
         {
             mesh.Clear();
@@ -113,25 +153,6 @@ namespace APG_CW1
             mesh.colors = colors;
 
             mesh.RecalculateNormals();
-        }
-
-        private float CalculateNoise(float x, float z)
-        {
-            float noise;
-            noise = Mathf.PerlinNoise(x, z) * 5;
-            noise += Mathf.PerlinNoise(x * amplitude1, z * amplitude1) * frequency1;
-            noise -= Mathf.PerlinNoise(x * amplitude2, z * amplitude2) * frequency2;
-            noise += Mathf.PerlinNoise(x * amplitude3, z * amplitude3) * frequency3 * 2;
-            return noise;
-        }
-
-        public void Regenrate()
-        {
-            amplitude3 = UnityEngine.Random.Range(0.05f, 0.11f);
-            frequency3 = UnityEngine.Random.Range(4f, 8f);
-
-            amplitude2 = UnityEngine.Random.Range(0.4f, 0.7f);
-            frequency2 = UnityEngine.Random.Range(1f, 3f);
         }
     }
 }

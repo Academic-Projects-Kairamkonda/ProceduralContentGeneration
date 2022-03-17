@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace APG_CW1
 {
-
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     public class CreateShape : MonoBehaviour
